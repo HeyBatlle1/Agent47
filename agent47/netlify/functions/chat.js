@@ -1,27 +1,5 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const { Client } = require('pg');
-
-// Database connection helper
-async function getDbClient() {
-  const connectionString = process.env.NEON_DATABASE_URL;
-
-  if (!connectionString) {
-    throw new Error('NEON_DATABASE_URL environment variable is required');
-  }
-
-  const client = new Client({
-    connectionString,
-    ssl: {
-      rejectUnauthorized: false
-    },
-    connectionTimeoutMillis: 15000,
-    query_timeout: 30000,
-    statement_timeout: 30000
-  });
-
-  await client.connect();
-  return client;
-}
+const { getDbClient } = require('./_shared/db-helper');
 
 exports.handler = async (event, context) => {
   // Enable keep-alive for connection reuse
